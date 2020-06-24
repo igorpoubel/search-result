@@ -7,19 +7,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.62.2] - 2020-06-23
+### Fixed
+- Navigation on collections page.
+
+## [3.62.1] - 2020-06-22
+### Fixed
+- Fixed "Clear" button on FT searches.
+
+## [3.62.0] - 2020-06-22 [YANKED]
+### Changed
+- "Clear" button on mobile filters to uncheck every brand and specification filter.
+
+## [3.61.0] - 2020-06-19
+
+### Added
+- Search redirect.
+
 ## [3.60.6] - 2020-06-16
 
 ### Fixed
 - Problem with `useFetchMore` that displayed repeated products.
 
 ## [3.60.5] - 2020-06-15
-
 ### Added
 - Accept `facets` breadcrumb as fallback.
 
 ## [3.60.4] - 2020-06-15
 ### Fixed
-- crashes happening when clicking on a department filter on mobile.
+- Crashes happening when clicking on a department filter on mobile.
 
 ## [3.60.3] - 2020-06-12
 
