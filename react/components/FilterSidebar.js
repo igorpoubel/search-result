@@ -19,6 +19,7 @@ import {
   isCategoryDepartmentCollectionOrFT,
   filterCategoryDepartmentCollectionAndFT,
 } from '../utils/queryAndMapUtils'
+import useSelectedFilters from '../hooks/useSelectedFilters'
 
 const CSS_HANDLES = [
   "filterPopupButton",
@@ -44,12 +45,15 @@ const FilterSidebar = ({
   maxItemsDepartment,
   maxItemsCategory
 }) => {
+  // const filters = useSelectedFilters(filtersFacets)
   const filterContext = useFilterNavigator();
   const handles = useCssHandles(CSS_HANDLES);
   const shouldClear = useRef(false)
 
-  const [filterOperations, setFilterOperations] = useState(selectedFilters.filter(op => op.map !== "c"));
-  const [categoryTreeOperations, setCategoryTreeOperations] = useState(selectedFilters.filter(op => op.map === "c"));
+  const [filterOperations, setFilterOperations] = useState([]);
+  const [categoryTreeOperations, setCategoryTreeOperations] = useState([]);
+  // const [filterOperations, setFilterOperations] = useState(selectedFilters.filter(op => op.map !== "c"));
+  // const [categoryTreeOperations, setCategoryTreeOperations] = useState(selectedFilters.filter(op => op.map === "c"));
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const currentTree = useCategoryTree(tree, categoryTreeOperations);
 
@@ -61,7 +65,6 @@ const FilterSidebar = ({
   };
 
   const handleFilterCheck = filter => {
-    // console.log('handleFilterCheck', filter);
     if (!isFilterSelected(filterOperations, filter)) {
       setFilterOperations(filterOperations.concat(filter));
     } else {
@@ -72,9 +75,8 @@ const FilterSidebar = ({
   };
 
   const handleApply = () => {
-    console.log('[filtro] filterOperations',filterOperations)
     navigateToFacet(filterOperations, preventRouteChange);
-    // setFilterOperations([]);
+    setFilterOperations([]);
   };
 
   const handleClearFilters = () => {
@@ -115,22 +117,6 @@ const FilterSidebar = ({
     });
   };
 
-  const updatedFilters = () => {
-    return filters.map((filter) => {
-      if(filter.facets.length > 0){
-        return filter.facets.map((facet) => {
-          facet.selected = (isFilterSelected(filterOperations, facet) !== undefined);
-          return facet;
-        })
-      }
-      return filter;
-    });
-  }
-
-  // console.log(filters)
-  Object.assign({},filters,updatedFilters());
-  // console.log(filters)
-
   const context = useMemo(() => {
     const { query, map } = filterContext
     const fullTextAndCollection = getFullTextAndCollection(query, map)
@@ -168,7 +154,8 @@ const FilterSidebar = ({
           priceRange={priceRange}
           hiddenFacets={hiddenFacets}
           showSelectedFilters={showSelectedFilters}
-          selectedFilters={selectedFilters}
+          selectedFilters={filterOperations}
+          appliedFilters={selectedFilters}
           maxItemsDepartment={maxItemsDepartment}
           maxItemsCategory={maxItemsCategory}
         />

@@ -14,7 +14,6 @@ const FacetItem = ({
   className,
   preventRouteChange,
 }) => {
-  console.log('facet',facet)
   const { showFacetQuantity } = useContext(SettingsContext)
   const handles = useCssHandles(CSS_HANDLES)
   const classes = classNames(

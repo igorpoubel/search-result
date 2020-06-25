@@ -174,7 +174,6 @@ export const buildNewQueryMap = (
 }
 
 const useFacetNavigation = selectedFacets => {
-  // console.log('selectedFacets',selectedFacets)
   const { navigate, setQuery } = useRuntime()
   const { map, query } = useFilterNavigator()
   const { fuzzy, operator, searchState } = useSearchState()
@@ -204,18 +203,11 @@ const useFacetNavigation = selectedFacets => {
         return
       }
 
-      // console.log('fullText',fullText)
-      // console.log('currentQuery',currentQuery)
-      // console.log('currentMap',currentMap)
-      // console.log('selectedFacets',selectedFacets)
-      // console.log('facets',facets)
-
       const newQuery = replaceQueryForNewQueryFormat(currentQuery, currentMap, [
         ...selectedFacets,
         ...facets,
       ])
 
-      // console.log(newQuery)
 
       const urlParams = getCleanUrlParams(
         removeMapForNewURLFormat(currentMap, [...selectedFacets, ...facets])

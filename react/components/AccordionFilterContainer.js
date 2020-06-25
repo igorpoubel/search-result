@@ -11,6 +11,7 @@ import DepartmentFilters from "./DepartmentFilters";
 import SelectedFilters from "./SelectedFilters";
 import AvailableFilters from "./AvailableFilters";
 import { ExtensionPoint } from "vtex.render-runtime";
+import useSelectedFilters from '../hooks/useSelectedFilters'
 // import FilterSidebar from "./FilterSidebar";
 
 const CATEGORIES_TITLE = "store/search.filter.title.categories";
@@ -34,14 +35,22 @@ const AccordionFilterContainer = ({
   hiddenFacets,
   showSelectedFilters,
   selectedFilters,
+  appliedFilters,
   maxItemsDepartment,
   maxItemsCategory
 }) => {
-  // const [openItem, setOpenItem] = useState(null);
   const handles = useCssHandles(CSS_HANDLES);
 
-  // console.log('filters',filters)
-  // console.log('filters',selectedFilters)
+  const filtersChecked = filters.map(filter => {
+    const options = {};
+    if(filter.title !== undefined) options.title = filter.title;
+    if(filter.type !== undefined) options.type = filter.type;
+    if(filter.facets.length > 0) {
+      options.facets = useSelectedFilters(filter.facets)
+    }
+
+    return options;
+  })
 
   const filterClasses = classNames({
     "flex-column items-center justify-center flex-auto h-100": mobileLayout,
@@ -63,7 +72,7 @@ const AccordionFilterContainer = ({
         </div>
         {showSelectedFilters ? (
           <SelectedFilters
-            filters={selectedFilters.filter(op => op.map !== "c")}
+            filters={appliedFilters.filter(op => op.map !== "c")}
             preventRouteChange={preventRouteChange}
             navigateToFacet={onFilterCheck}
           />
@@ -78,7 +87,7 @@ const AccordionFilterContainer = ({
           maxItemsCategory={maxItemsCategory}
         />
         <AvailableFilters
-          filters={filters}
+          filters={filtersChecked}
           priceRange={priceRange}
           preventRouteChange={preventRouteChange}
           initiallyCollapsed={initiallyCollapsed}
@@ -205,6 +214,7 @@ AccordionFilterContainer.propTypes = {
   hiddenFacets: PropTypes.object,
   showSelectedFilters: PropTypes.bool,
   selectedFilters: PropTypes.object,
+  appliedFilters: PropTypes.object,
   maxItemsDepartment: PropTypes.number,
   maxItemsCategory: PropTypes.number
 };

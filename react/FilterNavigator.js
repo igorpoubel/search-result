@@ -80,8 +80,6 @@ const FilterNavigator = ({
     (isMobile && layout === LAYOUT_TYPES.responsive) ||
     layout === LAYOUT_TYPES.mobile;
 
-  console.log('[filtro] brands',brands)
-
   const selectedFilters = useMemo(() => {
     const options = [
       ...specificationFilters.map(filter => {
@@ -100,10 +98,7 @@ const FilterNavigator = ({
     facet => facet.selected
   );
 
-  console.log('[filtro] selectedFilters',selectedFilters)
-
   const selectedCategories = getSelectedCategories(tree);
-  console.log('[filtro] selectedCategories',selectedCategories)
   const navigateToFacet = useFacetNavigation(
     useMemo(() => {
       return selectedCategories.concat(selectedFilters);
