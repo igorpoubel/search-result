@@ -1,18 +1,19 @@
-import React from 'react'
-import { useSearchPage } from 'vtex.search-page-context/SearchPageContext'
-import { useDevice } from 'vtex.device-detector'
-import { pathOr } from 'ramda'
+import React from "react";
+import { useSearchPage } from "vtex.search-page-context/SearchPageContext";
+import { useDevice } from "vtex.device-detector";
+import { pathOr } from "ramda";
 
-import FilterNavigator from './FilterNavigator'
-import FilterNavigatorContext from './components/FilterNavigatorContext'
+import FilterNavigator from "./FilterNavigator";
+import FilterNavigatorContext from "./components/FilterNavigatorContext";
 
-import styles from './searchResult.css'
+import styles from "./searchResult.css";
 
 const withSearchPageContextProps = Component => ({
   layout,
   initiallyCollapsed,
   maxItemsDepartment,
   maxItemsCategory,
+  showSelectedFilters = false
 }) => {
   const {
     searchQuery,
@@ -23,27 +24,27 @@ const withSearchPageContextProps = Component => ({
     filters,
     showFacets,
     preventRouteChange,
-    facetsLoading,
-  } = useSearchPage()
-  const { isMobile } = useDevice()
+    facetsLoading
+  } = useSearchPage();
+  const { isMobile } = useDevice();
 
-  const facets = pathOr({}, ['data', 'facets'], searchQuery)
+  const facets = pathOr({}, ["data", "facets"], searchQuery);
   const {
     brands,
     priceRanges,
     specificationFilters,
     categoriesTrees,
-    queryArgs,
-  } = facets
+    queryArgs
+  } = facets;
 
   if (showFacets === false || !map) {
-    return null
+    return null;
   }
 
   return (
     <div
-      className={`${styles['filters--layout']} ${
-        layout === 'desktop' && isMobile ? 'w-100 mh5' : ''
+      className={`${styles["filters--layout"]} ${
+        layout === "desktop" && isMobile ? "w-100 mh5" : ""
       }`}
     >
       <FilterNavigatorContext.Provider value={queryArgs}>
@@ -62,10 +63,11 @@ const withSearchPageContextProps = Component => ({
           initiallyCollapsed={initiallyCollapsed}
           maxItemsDepartment={maxItemsDepartment}
           maxItemsCategory={maxItemsCategory}
+          showSelectedFilters={showSelectedFilters}
         />
       </FilterNavigatorContext.Provider>
     </div>
-  )
-}
+  );
+};
 
-export default withSearchPageContextProps(FilterNavigator)
+export default withSearchPageContextProps(FilterNavigator);
