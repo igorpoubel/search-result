@@ -10,6 +10,7 @@ import styles from "./searchResult.css";
 
 const withSearchPageContextProps = Component => ({
   layout,
+  headerTitle = "",
   initiallyCollapsed,
   maxItemsDepartment,
   maxItemsCategory,

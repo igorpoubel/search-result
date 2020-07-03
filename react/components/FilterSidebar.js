@@ -1,10 +1,12 @@
 import classNames from 'classnames'
 import produce from 'immer'
-import React, { useState, useEffect, useMemo, Fragment, useRef } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { ExtensionPoint } from 'vtex.render-runtime'
-import { Button } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
+import { Icon } from 'vtex.store-icons'
+
+import { Drawer, DrawerHeader, DrawerCloseButton } from 'zonasul.drawer'
+// import { Drawer, DrawerHeader, DrawerCloseButton } from 'vtex.store-drawer'
 
 import FilterNavigatorContext, {
   useFilterNavigator
@@ -19,9 +21,9 @@ import {
   isCategoryDepartmentCollectionOrFT,
   filterCategoryDepartmentCollectionAndFT,
 } from '../utils/queryAndMapUtils'
-import useSelectedFilters from '../hooks/useSelectedFilters'
 
 const CSS_HANDLES = [
+  "filterPopupDrawer",
   "filterPopupButton",
   "filterPopupTitle",
   "filterButtonsBox",
@@ -31,6 +33,7 @@ const CSS_HANDLES = [
 ];
 
 const FilterSidebar = ({
+  inlineElement,
   loading,
   mobileLayout,
   selectedFilters,
@@ -45,15 +48,13 @@ const FilterSidebar = ({
   maxItemsDepartment,
   maxItemsCategory
 }) => {
-  // const filters = useSelectedFilters(filtersFacets)
+
   const filterContext = useFilterNavigator();
   const handles = useCssHandles(CSS_HANDLES);
   const shouldClear = useRef(false)
 
   const [filterOperations, setFilterOperations] = useState([]);
   const [categoryTreeOperations, setCategoryTreeOperations] = useState([]);
-  // const [filterOperations, setFilterOperations] = useState(selectedFilters.filter(op => op.map !== "c"));
-  // const [categoryTreeOperations, setCategoryTreeOperations] = useState(selectedFilters.filter(op => op.map === "c"));
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const currentTree = useCategoryTree(tree, categoryTreeOperations);
 
@@ -139,8 +140,49 @@ const FilterSidebar = ({
     }
   }, [filterOperations, filterContext, selectedFilters])
 
+  const Filtros = () => (
+    <button
+      className={classNames(
+        handles.filterPopupButton,
+        'flex',
+        'justify-center',
+        'items-center'
+      )}
+      type={"button"}
+    >
+      <span
+        className={classNames(
+          handles.filterPopupTitle
+        )}
+      >
+        Filtrar
+      </span>
+      <span
+        className={classNames(
+          handles.filterPopupArrowIcon,
+          'flex',
+          'items-center'
+        )}
+      >
+       <Icon id={"mpa-filter-settings"} viewBox={"0 0 15 15"} size={"15"} />
+      </span>
+    </button>
+  )
+
   return (
-    <Fragment>
+    <Drawer
+      className={handles.filterPopupDrawer}
+      local={inlineElement.current}
+      headerPageElement={".vtex-sticky-layout-0-x-container--mobile"}
+      customIcon={Filtros()}
+      isFullWidth={true}
+      maxWidth={"100"}
+      backdropMode={"none"}
+
+    >
+      <DrawerHeader>
+        <DrawerCloseButton icon={"voltar"} viewBox={"0 0 25 20"} />
+      </DrawerHeader>
       <FilterNavigatorContext.Provider value={context}>
         <AccordionFilterContainer
           loading={loading}
@@ -166,29 +208,26 @@ const FilterSidebar = ({
         <div
           className={`${handles.filterClearButtonWrapper} bottom-0 fl w-50 pl4 pr2`}
         >
-          <Button
+          <button
             block
             variation="tertiary"
             size="regular"
             onClick={handleClearFilters}
           >
             <FormattedMessage id="store/search-result.filter-button.clear" />
-          </Button>
+          </button>
         </div>
         <div
           className={`${handles.filterApplyButtonWrapper} bottom-0 fr w-50 pr4 pl2`}
         >
-          <Button
-            block
-            variation="secondary"
-            size="regular"
+          <a
             onClick={handleApply}
           >
             <FormattedMessage id="store/search-result.filter-button.apply" />
-          </Button>
+          </a>
         </div>
       </div>
-    </Fragment>
+    </Drawer>
   );
 };
 

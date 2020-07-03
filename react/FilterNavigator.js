@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { flatten } from "ramda";
-import React, { useMemo, Fragment } from "react";
+import React, { useMemo, Fragment, useRef } from 'react'
 import ContentLoader from "react-content-loader";
 import { FormattedMessage } from "react-intl";
 import { ExtensionPoint } from "vtex.render-runtime";
@@ -74,6 +74,9 @@ const FilterNavigator = ({
   maxItemsCategory = 8,
   showSelectedFilters
 }) => {
+
+  const inlineElement = useRef(null)
+
   const { isMobile } = useDevice();
   const handles = useCssHandles(CSS_HANDLES);
   const mobileLayout =
@@ -133,9 +136,10 @@ const FilterNavigator = ({
       ) : null}
 
       {mobileLayout ? (
-        <div className={styles.filters}>
+        <div className={styles.filters} ref={inlineElement}>
           <div className={`${filterClasses} ${handles.filtersWrapperMobile}`}>
             <FilterSidebar
+              inlineElement={inlineElement}
               loading={loading}
               mobileLayout={mobileLayout}
               selectedFilters={selectedCategories.concat(selectedFilters)}

@@ -1,9 +1,9 @@
 {
-  "name": "search-result",
-  "vendor": "vtex",
-  "version": "3.62.2",
-  "title": "VTEX Search Result",
-  "description": "A search result wrapper component",
+  "name": "filter-result",
+  "vendor": "zonasul",
+  "version": "0.1.0",
+  "title": "ZonaSul Filter Search Result",
+  "description": "A modified filter for search result",
   "mustUpdateAt": "2019-04-25",
   "registries": [
     "smartcheckout"
@@ -39,7 +39,8 @@
     "vtex.responsive-values": "0.x",
     "vtex.css-handles": "0.x",
     "vtex.store-drawer": "0.x",
-    "vtex.product-list-context": "0.x"
+    "vtex.product-list-context": "0.x",
+    "zonasul.drawer": "0.x"
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
